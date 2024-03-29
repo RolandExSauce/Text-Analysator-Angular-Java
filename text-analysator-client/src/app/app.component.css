@@ -1,0 +1,21 @@
+/* css typography */
+
+.container {
+  text-align: center;
+}
+
+.highlightFuncs {
+  background-color: bisque;
+}
+
+
+h2 {
+  margin: 0.7em;
+  font-size: 3rem;
+  font-weight: bold;
+}
+
+h4 {
+  margin-bottom: 1.5em;
+  line-height: 1.8;
+}

@@ -1,0 +1,19 @@
+<!-- toggle icon to use server/client script -->
+<div class="row">
+    <div class="col-sm">
+        <div class="form-check form-switch">
+            <input class="form-check-input toggle-icons-input" type="checkbox" role="switch" id="flexSwitchCheckChecked"
+                [checked]="scriptChecked" (change)="handleScriptChange()" />
+            <label class="form-check-label label-toggles" for="flexSwitchCheckChecked" [ngClass]="cssClasses">
+                {{ scriptText }} </label>
+        </div>
+    </div>
+
+    <!-- radio buttons to toggle between vowal/consonant scan -->
+    <div class="col-sm" *ngFor=" let radioOption of radioSelectOptions; let ii = index">
+        <input class="form-check-input" type="radio" name="radioFilter" value="{{ radioOption.value }}"
+            [checked]="ii === 0" (change)="radioChangeHandlerVorC($event)" />
+        <!-- one way binding to get index and if its 0, then it will evaluate to true and check prop is set to true, we want this input as the first one selected by default  -->
+        <label class="form-check-label" for="inlineRadio1" class="label-toggles"> {{ radioOption.text }} </label>
+    </div>
+</div>

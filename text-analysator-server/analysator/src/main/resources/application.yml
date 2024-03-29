@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: analysator
+  #mvc:
+    #static-path-pattern: /resources/**
+server:
+  port: 3002

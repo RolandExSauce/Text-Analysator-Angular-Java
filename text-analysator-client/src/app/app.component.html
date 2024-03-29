@@ -1,0 +1,22 @@
+<div class="container">
+  <h2>{{ programTitle }}</h2>
+  <h4>
+    The program keeps track of the <span class="highlightFuncs">occurrences of vowels
+      and consonants</span> in a given string or a word sequence.
+    By <span class="highlightFuncs">default</span>, the program works with a Client Side Script. Toggling the button
+    below makes
+    use of the <span class="highlightFuncs">Server Side Script</span>.
+  </h4>
+  <!-- toggling component, toggle between: server/client 
+  script, vowel/consonant analysator -->
+  <toggles (scriptCheckedChange)="onScriptCheckedChange($event)" (radioSelectionChange)="onRadioSelectedChange($event)">
+  </toggles> <!-- bind props to parent functions and pass the events -->
+
+  <!-- send-text component, will get user input, also handle the server request -->
+  <send-text [scriptChecked]="scriptChecked" [selectedRadioOption]="selectedRadioOption">
+  </send-text>
+  <!-- binding scriptChecked prop from app.component.ts to input prop of sen-text component -->
+
+  <display-result>
+  </display-result>
+</div>

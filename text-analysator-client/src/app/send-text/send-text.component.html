@@ -1,0 +1,44 @@
+<form class="row with-margin" style="padding: 1em; margin-top: 2em;">
+  <div class="col-lg-12">
+    <div class="input-group input-group-lg">
+      <input type="text" class="form-control input-lg" id="name" [formControl]="toAnalyseStr"
+        [placeholder]="dynamicPlaceHolderTxt" autocomplete="off" (ngModelChange)="handleInputChange($event)">
+      <span class="input-group-btn">
+
+        <!-- 
+        for flexibility when using the client script, changes will be automatically be visible while typing, to use the serverscript a button 
+        click to send the request will be needed -->
+        <div *ngIf="scriptChecked">
+          <button type="submit" class="btn btn-primary btn-lg ml-3" [disabled]="toAnalyseStr.invalid" (click)="$event.preventDefault();
+          sendRequest();">
+            Send analyse request
+          </button>
+        </div>
+
+      </span>
+    </div>
+  </div>
+</form>
+
+<!-- display some errors  -->
+<div *ngIf="toAnalyseStr?.invalid
+    && (toAnalyseStr?.dirty || toAnalyseStr?.touched) && scriptChecked
+    " style="margin: 1em 0 3.5em; font-size: large;">
+
+  <!-- check for different validators  -->
+  <small style="font-size: 1.5rem; color:rgba(189, 12, 12, 0.76); font-weight: bold; margin-right: 0.5em;">Oops, not
+    quite done, error: </small>
+
+    
+  <small class="text-danger" *ngIf="toAnalyseStr?.hasError('required')">
+    {{ INPUT_REQUIRED }}
+  </small>
+
+  <small class="text-danger" *ngIf="toAnalyseStr?.hasError('maxlength')">
+    {{ MAX_INPUT_LENGTH_MSG }}
+  </small>
+
+  <small class="text-danger" *ngIf="toAnalyseStr?.hasError('invalidInput')">
+    {{ ONLY_LETTERS }}
+  </small>
+</div>

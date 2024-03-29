@@ -1,0 +1,18 @@
+.label-toggles {
+  font-size: 1.6rem;
+  padding: 0.1em;
+  margin-left: 0.7em;
+}
+
+/* toggle inputs change size */
+input {
+  font-size: 1.7rem;
+}
+
+.toggle-icons {
+  color: green;
+}
+
+
+
+
