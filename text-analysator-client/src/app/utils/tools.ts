@@ -1,72 +1,114 @@
-import { IAlpha } from "./types";
+import { IAlphaObj } from "./types";
 import { AbstractControl, ValidationErrors } from "@angular/forms";
 
 
-//return either an alphabet array object with vowels or consonants or mixed 
-const decomposedAlphabet = (charTypes: string): IAlpha[] => {
-    //unpack array, and convert letters to uppercase (just because it looks nicer on the UI), then either return array of consonants or vowels objects or leave everything as it is
-    const alphabetArr = [...'abcdefghijklmnopqrstuvwxyz'].map((letter) => letter.toUpperCase()).filter((elem) => {
-        return charTypes === 'C' ? ("AEIOU").indexOf(elem) == -1 : charTypes === 'V' ? ("AEIOU").indexOf(elem) !== -1 : elem
+//return either an alphabet object with vowels or consonants or mixed 
+const decomposedAlphabet = (charTypes: string): IAlphaObj => {
+    //unpack string in array, then filter for vowel/consonants or mixed
+    const alphabetArr = [...'abcdefghijklmnopqrstuvwxyz'].filter((elem) => {
+        return charTypes === 'C' ? ("aeiou").indexOf(elem) == -1 : charTypes === 'V' ? ("aeiou").indexOf(elem) !== -1 : elem
     })
-    return alphabetArr.map((str) => ({ "letter": str, "count": 0 })); //map through array and return a new array of objects, with name of letter and a count prop (keep track of occurences)
+    const alphaArrObj = alphabetArr.reduce((acc, currentLetter) => ({ ...acc, [currentLetter]: 0 }), {} as IAlphaObj) //turning array to object with reduce
+
+    // const alphaArrObj = alphabetArr.reduce((acc, currentLetter) => {
+    //     // console.log("accumulator: ", acc)
+    //     // console.log("current letter: ", currentLetter)
+    //     return { ...acc, [currentLetter]: 0 };
+    // }, {} as IAlphaObj); //accumulator will be initialized as an Object
+
+    //console.log("converted to obj: ", newAlphaArrObj)
+    return alphaArrObj;
 }
 
-//init the arrays
-const initVowelsArrObj = decomposedAlphabet("V");
-const initConsonantsArrObj = decomposedAlphabet("C");
+//init the arrays, will be used by services as well
+const initedVowelsObj = decomposedAlphabet("V");
+const initedConsonantsObj = decomposedAlphabet("C");
 
-//function to count vowels 
+//count vowels func
 const countVowels = (providedString: string) => {
     const input = providedString.toLowerCase();
-    const vowelArr = decomposedAlphabet("V")
-    for (let i = 0; i < input.length; i++) {
-        vowelArr.forEach((vowelObj) => {
-            let { letter, count } = vowelObj;
-            if (input[i] === letter.toLowerCase()) {
-                vowelObj.count++
+    const vowelObj = decomposedAlphabet("V")
+
+    for (const char of input) {
+        for (const [key, value] of Object.entries(vowelObj)) {
+            if ((("aeiou").indexOf(char)) !== -1 && char === key) {
+                vowelObj[key]++;
             }
-        })
+        }
     }
-    //console.log("new vowel arr: ", vowelArr)
-    return vowelArr;
+    // console.log("new vowel obj: ", vowelObj)
+    return vowelObj;
 }
 
-//function to count consonants
+//count consonants func
 const countConsonants = (providedString: string) => {
     const input = providedString.toLowerCase();
-    const consonantArr = decomposedAlphabet("C")
-    for (let i = 0; i < input.length; i++) {
-        const currentChar = input[i];
-        consonantArr.forEach((consonantObj) => {
-            if ((("aeiou").indexOf(currentChar)) == -1 && currentChar === consonantObj.letter.toLowerCase()) {
-                consonantObj.count++
+    const consonantObj = decomposedAlphabet("C")
+    // console.log("decomposed c: ", consonantObj)
+    for (const char of input) {
+        for (const [key, value] of Object.entries(consonantObj)) {
+            if ((("aeiou").indexOf(char)) === -1 && char === key) {
+                consonantObj[key]++;
             }
-        })
+        }
     }
-    //console.log("new consonant arr: ", consonantArr)
-    return consonantArr;
+    //console.log("new consonant obj: ", consonantObj)
+    return consonantObj;
 }
 
 //count both vowels and consonants
 const countVorC = (providedString: string) => {
     const input = providedString.toLowerCase();
-    const alphaArr = decomposedAlphabet("CV")
-    for (let i = 0; i < input.length; i++) {
-        alphaArr.forEach((lettObj) => {
-            let { letter, count } = lettObj;
-            if (input[i] === letter.toLowerCase()) {
-                lettObj.count++
+    const alphaObj = decomposedAlphabet("CV")
+
+    for (const char of input) {
+        for (const [key, value] of Object.entries(alphaObj)) {
+            // console.log(`${key}: ${value}`);
+            if (char === key) {
+                alphaObj[key]++;
             }
-        })
+        }
     }
-    //console.log("the entire alphabet: ", alphaArr)
-    const vowelArr = alphaArr.filter(elem => ("aeiou").indexOf(elem.letter.toLowerCase()) !== -1)
-    const consonantArr = alphaArr.filter(elem => ("aeiou").indexOf(elem.letter.toLowerCase()) == -1)
-    return [vowelArr, consonantArr]; //return different array because we still need to set the data individually in the service also to render an appropriate display view
+    //filter objects, because they are converted to an array of type [string, number][], we use Object.fromEntries to convert them back to objects
+    const asArrayAlphaObj = Object.entries(alphaObj);
+    const newVowelObj = Object.fromEntries(asArrayAlphaObj.filter(([key, value]) => "aeiou".indexOf(key) !== -1))
+    const newConsonantObj = Object.fromEntries(asArrayAlphaObj.filter(([key, value]) => "aeiou".indexOf(key) === -1))
+    return [newVowelObj, newConsonantObj]; //return different array because we still need to set the data individually in the service also to render an appropriate display view
 }
 
+
+//when we receive server data we will update it in our alphabets objects
+const modServerAlphaObj = (serverAlphaObj: IAlphaObj, alphaType: string) => {
+    const alphaObj = decomposedAlphabet(alphaType)
+    for (const key in serverAlphaObj) {
+        // console.log("key of serverAlpha: ", key)
+        if (serverAlphaObj.hasOwnProperty(key)) {
+            if (!(key in alphaObj) || alphaObj[key] === 0) {
+                alphaObj[key] = serverAlphaObj[key];
+            }
+        }
+    }
+    // console.log("modified alphaObj: ", alphaObj)
+    return alphaObj;
+}
+
+//to separate alphabets for scanType "CV"
+const separateObjsVandC = (obj: IAlphaObj) => {
+    let vowelsObj: IAlphaObj = {};
+    let consonantsObj: IAlphaObj = {};
+    for (const [key, value] of Object.entries(obj)) {
+        if (['a', 'e', 'i', 'o', 'u'].includes(key)) {
+            vowelsObj[key] = value;
+        } else {
+            consonantsObj[key] = value;
+        }
+    }
+    return { vowelsObj, consonantsObj };
+}
+
+
 //custom validator for typed input
-function validateInput(control: AbstractControl<string>): ValidationErrors | null {
+const validateInput = (control: AbstractControl<string>): ValidationErrors | null => {
     const input = control.value?.toLowerCase()
     let regex = /^[a-zA-Z]+$/;
 
@@ -82,6 +124,13 @@ function validateInput(control: AbstractControl<string>): ValidationErrors | nul
     }
 }
 
-
-
-export { decomposedAlphabet, countConsonants, countVowels, countVorC, validateInput, initVowelsArrObj, initConsonantsArrObj } 
+export {
+    decomposedAlphabet,
+    countConsonants,
+    countVowels, countVorC,
+    modServerAlphaObj,
+    validateInput,
+    separateObjsVandC,
+    initedVowelsObj,
+    initedConsonantsObj
+} 

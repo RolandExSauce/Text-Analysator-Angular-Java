@@ -15,6 +15,8 @@ I acknowledge that in the development process of this application, I extensively
 * https://www.samarpaninfotech.com/blog/methods-to-share-data-between-angular-components/
 * https://angular.io/guide/understanding-angular-overview
 * https://fireship.io/lessons/sharing-data-between-angular-components-four-methods/
+* https://masteringjs.io/tutorials/fundamentals/filter-object
+* https://angular.io/api/common/KeyValue
 
 # Additionally, I utilized some of this YouTube videos, one of them being the tutorial which I used to learn Angular along with the official docs: 
 

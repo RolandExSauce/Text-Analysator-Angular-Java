@@ -9,7 +9,7 @@ public class AnalysatorService {
     public  HashMap<String, Integer> countConsonants(String providedString) {
         String input = providedString.toLowerCase();
         HashMap<String, Integer> consonantsMap = new HashMap<>();
-
+        consonantsMap.put("CType",0);
         char[] chars = input.toCharArray();
         for (char aChar : chars) {
             if ((("aeiou").indexOf(aChar)) == -1) {
@@ -29,6 +29,7 @@ public class AnalysatorService {
     public  HashMap<String, Integer> countVowels(String providedString) {
         String input = providedString.toLowerCase();
         HashMap<String, Integer> vowelsMap = new HashMap<>();
+        vowelsMap.put("VType", 0); //just so that the client know which structure to mod
 
         char[] chars = input.toCharArray();
         for (char aChar : chars) {
@@ -49,6 +50,7 @@ public class AnalysatorService {
     public  HashMap<String, Integer> countAll(String providedString) {
         String input = providedString.toLowerCase();
         HashMap<String, Integer> letterMap = new HashMap<>();
+        letterMap.put("CVType",0); //to indicate both were scanned
 
         char[] chars = input.toCharArray();
         for (char aChar : chars) {

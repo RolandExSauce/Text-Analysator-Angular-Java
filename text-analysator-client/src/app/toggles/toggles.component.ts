@@ -19,7 +19,7 @@ export class TogglesComponent implements OnInit {
   @Output() radioSelectionChange = new EventEmitter<string>(); //prop with output decorator, to emit radio select event to parent
   @Output() scriptCheckedChange = new EventEmitter<boolean>(); //prop with output decorator, to emit toggle switch event to parent
   scriptChecked = false //track toggle switch of which script to use 
-  scriptText = "ClientScript" //text to toggle alongside with switch button
+  scriptText = "ClientScript on" //text to toggle alongside with switch button
 
   //track the selected event 
   selectedRadioOption = 'V';
@@ -50,7 +50,7 @@ export class TogglesComponent implements OnInit {
   handleScriptChange() {
     this.scriptChecked = !this.scriptChecked
     // console.log("scriptChecked: ", this.scriptChecked)
-    this.scriptText = this.scriptChecked ? "ServerScript" : "ClientScript" //dinamically change text next to scriptText
+    this.scriptText = this.scriptChecked ? "ServerScript on" : "ClientScript on" //dinamically change text next to scriptText
     this.scriptCheckedChange.emit(this.scriptChecked); //emit event 
   }
 

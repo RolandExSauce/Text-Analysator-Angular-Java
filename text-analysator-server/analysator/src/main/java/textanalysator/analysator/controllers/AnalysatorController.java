@@ -21,7 +21,7 @@ public class AnalysatorController {
         HashMap<String, Integer> result;
         if(Objects.equals(scanType, "C")){
             result = analysatorService.countConsonants(input);
-            System.out.println("result: " + result);
+            //System.out.println("result: " + result);
            return result;
         }
         else if (Objects.equals(scanType, "V")){

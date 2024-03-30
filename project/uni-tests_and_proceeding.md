@@ -66,5 +66,10 @@ displaying ouput: display-result.component, first tried with event, didnt work w
 
 * implementing server data service/httpclient, testing request from angular, sysout sent params
 
-* implementing vowels consonants functions in a service class 
+* implementing vowels consonants functions in a service client class 
+
+* implementing vowels consonants functions in a service server class 
+
+* matching structures of backend and frontend, changed struct of array of objects to just objects, implementing function to integrate result from backend in view from 
+   frontend
 

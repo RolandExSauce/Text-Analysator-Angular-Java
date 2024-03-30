@@ -3,10 +3,12 @@
     <div class="col" style="color: green; font-size: large; font-weight: bold; margin-right: 4em; padding-right: 1em;">
       Vowels found:
     </div>
-    <div class="col" *ngFor="let letterObj of vowelsArrObjSetByService;">
-      <label style="font-size: 1.4rem;"> {{ letterObj.letter }},&nbsp;</label>
-      <label style="font-size: 1rem;">Count:&nbsp; <span style="color: red;">{{ letterObj.count }} </span> </label>
+
+    <div class="col" *ngFor="let obj of vowelsArrObjSetByService | keyvalue">
+      <label style="font-size: 1.4rem; text-transform: uppercase;">{{ obj.key}},&nbsp;</label>
+      <label style="font-size: 1rem;">Count:&nbsp; <span style="color: red;">{{ obj.value }} </span> </label>
     </div>
+
   </div>
 </div>
 
@@ -15,14 +17,15 @@
 <div class="container-fluid" style="text-align: center; margin: 2em 0 2em; border-bottom: thick double #32a1ce;">
   <h4 style="color: green; font-size: x-large; font-weight: bold; margin-bottom: 2em;">consonants found: </h4>
   <div class="row">
-    <ng-container *ngFor="let letterObj of consonantsArrObjSetByService;">
+    <ng-container *ngFor="let obj of consonantsArrObjSetByService | keyvalue">
       <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
         <div class="col-md-12">
           <div class="form-switch mb-3">
-            <label class="form-check-label fs-3" for="flexSwitchCheckChecked" style="font-weight: bold;">
-              {{ letterObj.letter }}
+            <label class="form-check-label fs-3" for="flexSwitchCheckChecked"
+              style="font-weight: bold; text-transform: uppercase;">
+              {{ obj.key }}
             </label>
-            <label style="color: red; margin-left: 0.2rem;"> {{ letterObj.count }}</label>
+            <label style="color: red; margin-left: 0.2rem;"> {{ obj.value }}</label>
           </div>
         </div>
       </div>

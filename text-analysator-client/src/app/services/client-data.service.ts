@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { IAlpha } from '../utils/types';
-import { initConsonantsArrObj, initVowelsArrObj } from '../utils/tools';
+import { IAlphaObj } from '../utils/types';
+import { initedConsonantsObj, initedVowelsObj } from '../utils/tools';
 
 @Injectable({
   providedIn: 'root' //make service available through the entire app
@@ -10,27 +10,25 @@ import { initConsonantsArrObj, initVowelsArrObj } from '../utils/tools';
 //service for making decrypted data available to other components (mainly display-result-component)
 export class ClientDataService {
 
-  //will be used to initialize the behaviour subjects
-
-  private vowelsData$ = new BehaviorSubject<IAlpha[]>(initVowelsArrObj);
-  private consonantsData$ = new BehaviorSubject<IAlpha[]>(initConsonantsArrObj);
+  //initialize the behaviour subjects
+  private vowelsData$ = new BehaviorSubject<IAlphaObj>(initedVowelsObj);
+  private consonantsData$ = new BehaviorSubject<IAlphaObj>(initedConsonantsObj);
 
   public getVowelsData(): Observable<any> {
     return this.vowelsData$.asObservable();
   }
 
-  public setVowelsData(data: IAlpha[]): void {
+  public setVowelsData(data: IAlphaObj): void {
     this.vowelsData$.next(data);
   }
   public getConsonantsData(): Observable<any> {
     return this.consonantsData$.asObservable();
   }
 
-  public setConsonantsData(data: IAlpha[]): void {
+  public setConsonantsData(data: IAlphaObj): void {
     this.consonantsData$.next(data);
   }
 
-  
 }
 
 

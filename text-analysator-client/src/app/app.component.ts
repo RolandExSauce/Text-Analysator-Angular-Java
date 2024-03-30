@@ -4,6 +4,7 @@ import { RouterOutlet } from '@angular/router';
 import { TogglesComponent } from './toggles/toggles.component';
 import { SendTextComponent } from './send-text/send-text.component';
 import { DisplayResultComponent } from './display-result/display-result.component';
+import { HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
 
 
 @Component({
@@ -11,6 +12,7 @@ import { DisplayResultComponent } from './display-result/display-result.componen
   standalone: true,
   imports: [
     CommonModule,
+    HttpClientModule, //does app component actually needs httpModule ? 🤔🤔, importing anyway cuz of ng test warning
     RouterOutlet,
 
     //import components
@@ -23,7 +25,7 @@ import { DisplayResultComponent } from './display-result/display-result.componen
   providers: [
     
     //provideClientHydration(),
-    // provideHttpClient(withFetch()),
+
   ]
 })
 
