@@ -33,7 +33,7 @@ I acknowledge that in the development process of this application, I extensively
 * project for java course used as well for similar logic (code on github)
 
 
-I hereby declare that this application was solely developed by me, with the mentioned resources being used for guidance and implementation purposes.
+# I hereby declare that this application was solely developed by me, with the mentioned resources being used for guidance and implementation purposes.
 
 
 
