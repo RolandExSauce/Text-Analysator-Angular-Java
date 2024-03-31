@@ -13,25 +13,36 @@ public class AnalysatorController {
 
     @PostMapping
     @ResponseBody
-    private HashMap<String, Integer> getInputAndDecodeType(@RequestBody IRequestBody body) {
-        //System.out.println("body: " + body);
+    private List<Map<String, Object>> getInputAndDecodeType(@RequestBody IRequestBody body) {
         String input = body.getInputProvided();
         String scanType = String.valueOf(body.getScanType());
+        List<Map<String, Object>> resultList = new ArrayList<>(); //response will be set as an array because
+        //in frontend we are matching the UI to set v or c or both simultaneously
 
-        HashMap<String, Integer> result;
+
+        //according to scanType we specify a key of CType, VType for the client to know which array has which data
         if(Objects.equals(scanType, "C")){
-            result = analysatorService.countConsonants(input);
-            //System.out.println("result: " + result);
-           return result;
+            Map<String, Object> result = new HashMap<>();
+            result.put("CType", analysatorService.countConsonants(input));
+            resultList.add(result);
         }
         else if (Objects.equals(scanType, "V")){
-            result = analysatorService.countVowels(input);
-            return result;
+            Map<String, Object> result = new HashMap<>();
+            result.put("VType", analysatorService.countVowels(input));
+            resultList.add(result);
         }
         else {
-            result = analysatorService.countAll(input);
-            return result;
+            Map<String, Object> vowelResult = new HashMap<>();
+            vowelResult.put("VType", analysatorService.countVowels(input));
+            resultList.add(vowelResult);
+
+            Map<String, Object> consonantResult = new HashMap<>();
+            consonantResult.put("CType", analysatorService.countConsonants(input));
+            resultList.add(consonantResult);
         }
+
+        return resultList;
     }
 
-    }
+
+}

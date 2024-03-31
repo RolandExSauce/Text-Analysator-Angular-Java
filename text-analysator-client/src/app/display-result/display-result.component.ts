@@ -50,7 +50,7 @@ export class DisplayResultComponent implements OnInit {
 
     this.ServerDataService.getVowelsData().subscribe({
       next: (data) => {
-        console.log("server data v in send display-result: ", data)
+        // console.log("server data v in send display-result: ", data)
         if (data) {
           this.vowelsArrObjSetByService = data
         }

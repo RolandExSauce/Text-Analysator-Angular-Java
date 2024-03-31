@@ -1,11 +1,9 @@
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { HttpClientModule } from '@angular/common/http';
-import { Injectable, NgModule } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { IAlphaObj, IReqBody } from '../utils/types';
-import { initedConsonantsObj, initedVowelsObj, modServerAlphaObj, separateObjsVandC } from '../utils/tools';
-
+import { IAlphaObj, IReqBody, ServerResponseStruct } from '../utils/types';
+import { initedConsonantsObj, initedVowelsObj, modServerAlphaObj } from '../utils/tools';
 
 
 @Injectable({
@@ -49,32 +47,32 @@ export class ServerDataService {
       headers: this.headers,
       responseType: "json"
     }).subscribe({
-      next: (data) => {
-        // console.log("data after post: ", data)
-        for (const [key, value] of Object.entries(data)) {
-          // console.log(`in post, key:${key}| in post, value: ${value}`);
-          if (key === "VType") {
-            const serverResInAlpha = modServerAlphaObj(data, "V") //integrate server response to alphabet arr
-            delete serverResInAlpha['VType'];
-            this.setVowelsData(serverResInAlpha)
-          }
+      next: (data: ServerResponseStruct[]) => {
 
-          else if (key === "CType") {
-            const serverResInAlpha = modServerAlphaObj(data, "C")
-            delete serverResInAlpha['CType'];
-            this.setConsonantsData(serverResInAlpha)
+        //get which type of data is returned by the server 
+        if (data.length === 1 && data[0].VType) {
+          // console.log("yes v")
+          // console.log("v: ", data[0].VType)
+          const serverResInAlpha = modServerAlphaObj(data[0].VType, "V") //integrate server response to alphabet arr
+          this.setVowelsData(serverResInAlpha)
+        }
 
-          }
+        else if (data.length === 1 && data[0].CType) {
+          // console.log("yes c")
+          // console.log("c: ", data[0].CType)
+          const serverResInAlpha = modServerAlphaObj(data[0].CType, "C") //integrate server response to alphabet arr
+          this.setConsonantsData(serverResInAlpha)
+        }
 
-          else {
-            //data is mixed here, cuz server sends a map with both mixed
-            const serverResInAlpha = modServerAlphaObj(data, "CV")
-            delete serverResInAlpha['CVType'];
-            const { vowelsObj, consonantsObj } = separateObjsVandC(serverResInAlpha);
-            this.setVowelsData(vowelsObj)
-            this.setConsonantsData(consonantsObj)
-          }
+        else if (data.length === 2 && data[0].VType && data[1].CType) {
+          // console.log("yes both")
+          // console.log("v: ", data[0].CType)
+          // console.log("c: ", data[1].CType)
 
+          const serverResInAlphaForV = modServerAlphaObj(data[0].VType, "V") //integrate server response for vowels to alphabet arr
+          const serverResInAlphaForC = modServerAlphaObj(data[1].CType, "C") //integrate server response for consonants to alphabet arr
+          this.setVowelsData(serverResInAlphaForV)
+          this.setConsonantsData(serverResInAlphaForC)
         }
       }
     })

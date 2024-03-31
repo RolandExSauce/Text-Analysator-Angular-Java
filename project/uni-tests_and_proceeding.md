@@ -70,6 +70,6 @@ displaying ouput: display-result.component, first tried with event, didnt work w
 
 * implementing vowels consonants functions in a service server class 
 
-* matching structures of backend and frontend, changed struct of array of objects to just objects, implementing function to integrate result from backend in view from 
-   frontend
+* matching structures of backend and frontend, changed struct of array of objects to just objects, implementing function to integrate result from backend in view from frontend
 
+* some fine tuning 

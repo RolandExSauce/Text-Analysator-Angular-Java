@@ -1,7 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { ClientDataService } from '../services/client-data.service';
-// import { initConsonantsArrObj, initVowelsArrObj } from '../utils/tools';
+import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'toggles',
@@ -12,9 +10,7 @@ import { ClientDataService } from '../services/client-data.service';
 })
 
 //toggle component for switching between server/client script, choosing vowels/consonant/both scan
-export class TogglesComponent implements OnInit {
-
-  constructor(private clientDataService: ClientDataService) { } //inject service
+export class TogglesComponent {
 
   @Output() radioSelectionChange = new EventEmitter<string>(); //prop with output decorator, to emit radio select event to parent
   @Output() scriptCheckedChange = new EventEmitter<boolean>(); //prop with output decorator, to emit toggle switch event to parent
@@ -39,12 +35,6 @@ export class TogglesComponent implements OnInit {
       value: "CV"
     }
   ]
-
-  //implement some default initializations
-  ngOnInit(): void {
-    // this.scriptChecked = false;
-    // this.scriptText = "Use ServerScript";
-  }
 
   //will keep track of the toggle switch
   handleScriptChange() {

@@ -1,9 +1,9 @@
 import { HttpClientModule } from '@angular/common/http';
 import { ServerDataService } from './../services/server-data.service';
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { countConsonants, countVorC, countVowels, initedConsonantsObj, initedVowelsObj, validateInput } from '../utils/tools';
+import { countConsonants, countVowels, initedConsonantsObj, initedVowelsObj, validateInput } from '../utils/tools';
 import { ClientDataService } from '../services/client-data.service';
 
 
@@ -56,18 +56,19 @@ export class SendTextComponent {
     //only client side script will be launched as soon as the user is typing
     if (!this.scriptChecked) {
       if (this.selectedRadioOption === "V") {
-        const arrVowels = countVowels(this.toAnalyseStr.value as string)
+        const arrV = countVowels(this.toAnalyseStr.value as string)
         // console.log(arrVowel)
-        this.clientDataService.setVowelsData(arrVowels) //update behaviour subject
+        this.clientDataService.setVowelsData(arrV) //update behaviour subject
       }
 
       else if (this.selectedRadioOption === "C") {
-        const arrConsonants = countConsonants(this.toAnalyseStr.value as string)
-        this.clientDataService.setConsonantsData(arrConsonants)
+        const arrC = countConsonants(this.toAnalyseStr.value as string)
+        this.clientDataService.setConsonantsData(arrC)
       }
       
       else {
-        const [arrV, arrC] = countVorC(this.toAnalyseStr.value as string) //will return 2 arrays
+        const arrV = countVowels(this.toAnalyseStr.value as string)
+        const arrC = countConsonants(this.toAnalyseStr.value as string)
         this.clientDataService.setVowelsData(arrV)
         this.clientDataService.setConsonantsData(arrC)
       }
