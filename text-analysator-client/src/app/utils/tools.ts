@@ -82,6 +82,7 @@ const validateInput = (control: AbstractControl<string>): ValidationErrors | nul
     }
 }
 
+
 export {
     decomposedAlphabet,
     countConsonants,

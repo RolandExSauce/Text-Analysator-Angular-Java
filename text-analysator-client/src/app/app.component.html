@@ -1,4 +1,5 @@
 <div class="container">
+  <h6 *ngIf="errMsg" style="color: red; font-size: 2rem; margin-top: 10px;">{{ errMsg }} </h6>
   <h2>{{ programTitle }}</h2>
   <h4>
     The program keeps track of the <span class="highlightFuncs">occurrences of vowels

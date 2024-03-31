@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { IAlphaObj } from '../utils/types';
 import { ClientDataService } from '../services/client-data.service';
 import { HttpClientModule } from '@angular/common/http';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -26,10 +27,13 @@ export class DisplayResultComponent implements OnInit {
   vowelsArrObjSetByService: IAlphaObj = {};
   consonantsArrObjSetByService: IAlphaObj = {};
 
+  vowelDataSub: Subscription | undefined;
+  consonantDataSub: Subscription | undefined;
+
 
   ngOnInit(): void {
     //subscribe to service 
-    this.clientDataService.getVowelsData().subscribe({
+    this.vowelDataSub = this.clientDataService.getVowelsData().subscribe({
       next: (data) => {
         //console.log("vowel data in display-result: ", this.vowelsArrObjSetByService)
         if (data) {
@@ -38,7 +42,7 @@ export class DisplayResultComponent implements OnInit {
       }
     });
 
-    this.clientDataService.getConsonantsData().subscribe({
+    this.consonantDataSub = this.clientDataService.getConsonantsData().subscribe({
       next: (data) => {
         //console.log("vowel data in display-result: ", this.vowelsArrObjSetByService)
         if (data) {
@@ -47,8 +51,9 @@ export class DisplayResultComponent implements OnInit {
       }
     });
 
+    //Subscription for server requests ****************************************************************** */
 
-    this.ServerDataService.getVowelsData().subscribe({
+    this.vowelDataSub = this.ServerDataService.getVowelsData().subscribe({
       next: (data) => {
         // console.log("server data v in send display-result: ", data)
         if (data) {
@@ -58,7 +63,7 @@ export class DisplayResultComponent implements OnInit {
       }
     });
 
-    this.ServerDataService.getConsonantsData().subscribe({
+    this.consonantDataSub = this.ServerDataService.getConsonantsData().subscribe({
       next: (data) => {
         // console.log("server data c in send display-result: ", data)
         if (data) {
@@ -67,6 +72,13 @@ export class DisplayResultComponent implements OnInit {
       }
     });
 
-
   }
+
+  //unsubscribe on destroy
+  ngOnDestroy(): void {
+    this.vowelDataSub?.unsubscribe();
+    this.consonantDataSub?.unsubscribe();
+  }
+
+
 }
