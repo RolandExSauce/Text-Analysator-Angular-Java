@@ -5,6 +5,7 @@ import { AbstractControl, ValidationErrors } from "@angular/forms";
 //return either an alphabet object with vowels or consonants 
 const decomposedAlphabet = (charTypes: string): IAlphaObj => {
     //unpack string in array, then filter for vowel/consonants
+
     const alphabetArr = [...'abcdefghijklmnopqrstuvwxyz'].filter((elem) => {
         return charTypes === 'C' ? ("aeiou").indexOf(elem) == -1 : ("aeiou").indexOf(elem) !== -1
     })
@@ -17,45 +18,64 @@ const decomposedAlphabet = (charTypes: string): IAlphaObj => {
 const initedVowelsObj = decomposedAlphabet("V");
 const initedConsonantsObj = decomposedAlphabet("C");
 
-//count vowels func
-const countVowels = (providedString: string) => {
+//function to generate the scan condition
+const genScanCondition = ($: string, scanType: string) => scanType === "C" ? ("aeiou").indexOf($) === -1 : ("aeiou").indexOf($) !== -1;
+//function to count vowels and counsonants silmutaneously 
+const countLetters = (providedString: string, scanType: string) => {
     const input = providedString.toLowerCase();
-    const vowelObj = decomposedAlphabet("V")
-
+    const letterObj = decomposedAlphabet(scanType)
     for (const char of input) {
-        for (const [key, value] of Object.entries(vowelObj)) {
-            if ((("aeiou").indexOf(char)) !== -1 && char === key) {
-                vowelObj[key]++;
+        for (const [key, value] of Object.entries(letterObj)) {
+            if (genScanCondition(char, scanType) && char === key) {
+                letterObj[key]++;
             }
         }
     }
-    // console.log("new vowel obj: ", vowelObj)
-    return vowelObj;
+    // console.log("new letter obj: ", letterObj) //can be either vowels or consonants
+    return letterObj;
 }
 
-//count consonants func
-const countConsonants = (providedString: string) => {
-    const input = providedString.toLowerCase();
-    const consonantObj = decomposedAlphabet("C")
-    // console.log("decomposed c: ", consonantObj)
-    for (const char of input) {
-        for (const [key, value] of Object.entries(consonantObj)) {
-            if ((("aeiou").indexOf(char)) === -1 && char === key) {
-                consonantObj[key]++;
-            }
-        }
-    }
-    //console.log("new consonant obj: ", consonantObj)
-    return consonantObj;
-}
+
+// //count vowels func
+// const countVowels = (providedString: string) => {
+//     const input = providedString.toLowerCase();
+//     const vowelObj = decomposedAlphabet("V")
+
+//     for (const char of input) {
+//         for (const [key, value] of Object.entries(vowelObj)) {
+//             if ((("aeiou").indexOf(char)) !== -1 && char === key) {
+//                 vowelObj[key]++;
+//             }
+//         }
+//     }
+//     // console.log("new vowel obj: ", vowelObj)
+//     return vowelObj;
+// }
+
+// //count consonants func
+// const countConsonants = (providedString: string) => {
+//     const input = providedString.toLowerCase();
+//     const consonantObj = decomposedAlphabet("C")
+//     // console.log("decomposed c: ", consonantObj)
+//     for (const char of input) {
+//         for (const [key, value] of Object.entries(consonantObj)) {
+//             if ((("aeiou").indexOf(char)) === -1 && char === key) {
+//                 consonantObj[key]++;
+//             }
+//         }
+//     }
+//     //console.log("new consonant obj: ", consonantObj)
+//     return consonantObj;
+// }
 
 //when we receive server data we will update it in our alphabets objects
 const modServerAlphaObj = (serverAlphaObj: IAlphaObj, alphaType: string) => {
     const alphaObj = decomposedAlphabet(alphaType)
+    console.log("key of serverAlpha: ", serverAlphaObj)
     for (const key in serverAlphaObj) {
-        // console.log("key of serverAlpha: ", key)
         if (serverAlphaObj.hasOwnProperty(key)) {
-            if (!(key in alphaObj) || alphaObj[key] === 0) {
+            if (!(key in alphaObj) || alphaObj[key] === 0) { //if key is not present in alphaObj and vlaue at given key not 
+                //is zero, update it with the value from server res
                 alphaObj[key] = serverAlphaObj[key];
             }
         }
@@ -85,8 +105,9 @@ const validateInput = (control: AbstractControl<string>): ValidationErrors | nul
 
 export {
     decomposedAlphabet,
-    countConsonants,
-    countVowels,
+    // countConsonants,
+    // countVowels,
+    countLetters,
     modServerAlphaObj,
     validateInput,
     initedVowelsObj,

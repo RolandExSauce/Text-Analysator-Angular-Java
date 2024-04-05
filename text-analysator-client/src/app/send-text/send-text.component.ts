@@ -3,7 +3,13 @@ import { ServerDataService } from './../services/server-data.service';
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { countConsonants, countVowels, initedConsonantsObj, initedVowelsObj, validateInput } from '../utils/tools';
+import { 
+  // countConsonants, 
+  // countVowels, 
+  countLetters, 
+  initedConsonantsObj, 
+  initedVowelsObj, 
+  validateInput } from '../utils/tools';
 import { ClientDataService } from '../services/client-data.service';
 
 
@@ -11,7 +17,7 @@ import { ClientDataService } from '../services/client-data.service';
   selector: 'send-text',
   standalone: true,
   imports: [
-    CommonModule, 
+    CommonModule,
     HttpClientModule, //does send-text component actually needs httpModule ? 🤔🤔, importing anyway cuz of ng test warning
     ReactiveFormsModule
   ],
@@ -45,6 +51,7 @@ export class SendTextComponent {
   //provided string/word by user
   toAnalyseStr = new FormControl('', [Validators.required, Validators.maxLength(this.MAX_INPUT_LENGTH), validateInput]);
 
+
   //when user starts typing
   handleInputChange(e: Event) {
     //reset if no values provided
@@ -52,25 +59,26 @@ export class SendTextComponent {
       this.clientDataService.setVowelsData(initedVowelsObj)
       this.clientDataService.setConsonantsData(initedConsonantsObj)
     }
+    // countLetters(String(this.toAnalyseStr.value), this.selectedRadioOption)
 
     //only client side script will be launched as soon as the user is typing
     if (!this.scriptChecked) {
       if (this.selectedRadioOption === "V") {
-        const arrV = countVowels(this.toAnalyseStr.value as string)
+        const ObjV = countLetters(String(this.toAnalyseStr.value), "V")
         // console.log(arrVowel)
-        this.clientDataService.setVowelsData(arrV) //update behaviour subject
+        this.clientDataService.setVowelsData(ObjV) //update behaviour subject
       }
 
       else if (this.selectedRadioOption === "C") {
-        const arrC = countConsonants(this.toAnalyseStr.value as string)
-        this.clientDataService.setConsonantsData(arrC)
+        const ObjC = countLetters(String(this.toAnalyseStr.value), "C")
+        this.clientDataService.setConsonantsData(ObjC)
       }
-      
+
       else {
-        const arrV = countVowels(this.toAnalyseStr.value as string)
-        const arrC = countConsonants(this.toAnalyseStr.value as string)
-        this.clientDataService.setVowelsData(arrV)
-        this.clientDataService.setConsonantsData(arrC)
+        const ObjV = countLetters(String(this.toAnalyseStr.value), "V")
+        const ObjC = countLetters(String(this.toAnalyseStr.value), "C")
+        this.clientDataService.setVowelsData(ObjV)
+        this.clientDataService.setConsonantsData(ObjC)
       }
     }
   }

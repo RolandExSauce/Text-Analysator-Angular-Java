@@ -1,4 +1,3 @@
-
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subscription, catchError, throwError } from 'rxjs';
@@ -66,15 +65,15 @@ export class ServerDataService {
           if (data.length === 1 && data[0].VType) {
             // console.log("yes v")
             // console.log("v: ", data[0].VType)
-            const serverResInAlpha = modServerAlphaObj(data[0].VType, "V") //integrate server response to alphabet arr
-            this.setVowelsData(serverResInAlpha)
+            const putServerResInAlpha = modServerAlphaObj(data[0].VType, "V") //integrate server response to alphabet arr
+            this.setVowelsData(putServerResInAlpha)
           }
 
           else if (data.length === 1 && data[0].CType) {
             // console.log("yes c")
             // console.log("c: ", data[0].CType)
-            const serverResInAlpha = modServerAlphaObj(data[0].CType, "C") //integrate server response to alphabet arr
-            this.setConsonantsData(serverResInAlpha)
+            const putServerResInAlpha = modServerAlphaObj(data[0].CType, "C") //integrate server response to alphabet arr
+            this.setConsonantsData(putServerResInAlpha)
           }
 
           else if (data.length === 2 && data[0].VType && data[1].CType) {
@@ -108,11 +107,11 @@ export class ServerDataService {
 
   //unsubscribe
   ngOnDestroy(): void {
-    if (this.postSub) {
-      this.postSub.unsubscribe();
-    }
+    this.postSub?.unsubscribe();
   }
+
 }
+
 
 
 

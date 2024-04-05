@@ -14,14 +14,14 @@ export class ClientDataService {
   private vowelsData$ = new BehaviorSubject<IAlphaObj>(initedVowelsObj);
   private consonantsData$ = new BehaviorSubject<IAlphaObj>(initedConsonantsObj);
 
-  public getVowelsData(): Observable<any> {
+  public getVowelsData(): Observable<IAlphaObj> {
     return this.vowelsData$.asObservable();
   }
 
   public setVowelsData(data: IAlphaObj): void {
     this.vowelsData$.next(data);
   }
-  public getConsonantsData(): Observable<any> {
+  public getConsonantsData(): Observable<IAlphaObj> {
     return this.consonantsData$.asObservable();
   }
 

@@ -13,7 +13,7 @@ interface IReqBody { //should match name from backend as well
 }
 
 
-//custom type base on server response
+//custom type based on server response
 type ServerResponseStruct = {
     CType?: {
         [key: string]: number;

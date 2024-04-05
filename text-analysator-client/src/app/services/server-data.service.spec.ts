@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-
 import { ServerDataService } from './server-data.service';
 
 describe('ServerDataService', () => {
