@@ -1,5 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Output } from '@angular/core';
+import { ClientDataService } from '../services/client-data.service';
+import { ServerDataService } from '../services/server-data.service';
+import { initedConsonantsObj, initedVowelsObj } from '../utils/tools';
+
 
 @Component({
   selector: 'toggles',
@@ -11,6 +15,9 @@ import { Component, EventEmitter, Output } from '@angular/core';
 
 //toggle component for switching between server/client script, choosing vowels/consonant/both scan
 export class TogglesComponent {
+
+  //using dependency injection to inject services
+  constructor(private clientDataService: ClientDataService, private serverDataService: ServerDataService) { }
 
   @Output() radioSelectionChange = new EventEmitter<string>(); //prop with output decorator, to emit radio select event to parent
   @Output() scriptCheckedChange = new EventEmitter<boolean>(); //prop with output decorator, to emit toggle switch event to parent
@@ -54,9 +61,13 @@ export class TogglesComponent {
     this.radioSelectionChange.emit(this.selectedRadioOption) //emit event
 
     //reset on radio change ?
-    // this.clientDataService.setVowelsData(initVowelsArrObj)
-    // this.clientDataService.setConsonantsData(initConsonantsArrObj)
-
+    if (this.selectedRadioOption === "V") {
+      this.clientDataService.setConsonantsData(initedConsonantsObj)
+    }
+    else if (this.selectedRadioOption === "C") {
+      this.clientDataService.setVowelsData(initedVowelsObj)
+    }
+    //last option:
   }
 
   //css for some effects on switch toggle 
